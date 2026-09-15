@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medusa - Women's Safety Route Assistant</title>
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="nav-container">
+        <a href="#" class="logo">MEDUSA</a>
+
+        <nav class="nav-links">
+            <a href="#planner">Plan Route</a>
+            <a href="#safety">Safety Map</a>
+            <a href="#about">About</a>
+        </nav>
+    </div>
+</header>
+
+
+<main>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-eyebrow">WOMEN'S SAFETY ROUTE ASSISTANT</p>
+
+            <h1>Travel smarter.<br>Stay safer.</h1>
+
+            <p class="hero-description">
+                Plan a route and explore nearby safety infrastructure,
+                including police stations, hospitals, pharmacies,
+                public toilets and CCTV locations.
+            </p>
+
+            <a href="#planner" class="hero-button">
+                Plan a Route →
+            </a>
+        </div>
+    </section>
+
+
+    <!-- ROUTE PLANNER -->
+    <section class="planner-section" id="planner">
+
+        <div class="section-heading planner-heading">
+            <p class="section-label">ROUTE PLANNER</p>
+            <h2>Plan a Route</h2>
+            <p>
+                Enter your starting point and destination to find
+                a road route with nearby safety facilities.
+            </p>
+        </div>
+
+        <div class="planner-card">
+
+            <div class="input-group">
+                <label for="from">From</label>
+                <input
+                    type="text"
+                    id="from"
+                    placeholder="Enter starting location"
+                >
+            </div>
+
+            <button
+                type="button"
+                class="gps-button"
+                onclick="useCurrentLocation()"
+            >
+                Use GPS
+            </button>
+
+            <div class="input-group">
+                <label for="to">To</label>
+                <input
+                    type="text"
+                    id="to"
+                    placeholder="Enter destination"
+                >
+            </div>
+
+            <div class="input-group small-input">
+                <label for="time">Travel</label>
+
+                <select id="time">
+                    <option value="day">Day</option>
+                    <option value="night">Night</option>
+                </select>
+            </div>
+
+            <button
+                type="button"
+                class="find-route-btn"
+                onclick="findRoutes()"
+            >
+                Find Route
+            </button>
+
+        </div>
+
+        <p id="gps-status" class="gps-status"></p>
+
+    </section>
+
+
+    <!-- SAFETY MAP -->
+    <section class="map-section" id="safety">
+
+        <div class="section-heading safety-heading">
+            <p class="section-label">LIVE SAFETY MAP</p>
+            <h2>Route & Safety Infrastructure</h2>
+            <p>
+                Explore safety-related facilities around your route.
+            </p>
+        </div>
+
+
+        <div class="map-wrapper">
+
+            <div id="map"></div>
+
+
+            <!-- EMERGENCY -->
+            <div class="emergency-floating">
+                <div>
+                    <span class="emergency-title">Emergency</span>
+                    <span class="emergency-subtitle">
+                        Immediate assistance
+                    </span>
+                </div>
+
+                <div class="emergency-links">
+                    <a href="tel:112">112</a>
+                    <a href="tel:181">181</a>
+                </div>
+            </div>
+
+
+            <!-- MAP CONTROLS -->
+            <div class="map-legend">
+
+                <button
+                    type="button"
+                    data-type="police"
+                    onclick="showFacilityList('police')"
+                >
+                    Police
+                </button>
+
+                <button
+                    type="button"
+                    data-type="hospital"
+                    onclick="showFacilityList('hospital')"
+                >
+                    Hospital
+                </button>
+
+                <button
+                    type="button"
+                    data-type="toilets"
+                    onclick="showFacilityList('toilets')"
+                >
+                    Toilet
+                </button>
+
+                <button
+                    type="button"
+                    data-type="pharmacy"
+                    onclick="showFacilityList('pharmacy')"
+                >
+                    Pharmacy
+                </button>
+
+                <button
+                    type="button"
+                    data-type="cctv"
+                    onclick="showFacilityList('cctv')"
+                >
+                    CCTV
+                </button>
+
+                <button
+                    type="button"
+                    data-type="highrisk"
+                    onclick="showFacilityList('highrisk')"
+                >
+                    High Risk
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- FACILITY LIST -->
+        <div id="facility-list" class="facility-list"></div>
+
+
+        <!-- ROUTE RESULT -->
+        <div id="results" class="results"></div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+    <section class="about-section" id="about">
+
+        <div class="section-heading about-heading">
+            <p class="section-label">ABOUT MEDUSA</p>
+            <h2>Built for safer journeys.</h2>
+            <p>
+                Medusa combines route planning with publicly available
+                safety infrastructure data to help users make more
+                informed travel decisions.
+            </p>
+        </div>
+
+
+        <div class="about-grid">
+
+            <div class="about-card">
+                <span class="about-number">01</span>
+                <h3>Route Planning</h3>
+                <p>
+                    Find real road routes between two locations using
+                    OpenStreetMap and OSRM.
+                </p>
+            </div>
+
+
+            <div class="about-card">
+                <span class="about-number">02</span>
+                <h3>Safety Infrastructure</h3>
+                <p>
+                    Locate nearby police stations, hospitals,
+                    pharmacies, toilets and mapped CCTV locations.
+                </p>
+            </div>
+
+
+            <div class="about-card">
+                <span class="about-number">03</span>
+                <h3>Emergency Support</h3>
+                <p>
+                    Quick access to India's emergency number 112
+                    and Women Helpline 181.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    <p>MEDUSA — Women's Safety Route Assistant</p>
+    <p>Map data © OpenStreetMap contributors</p>
+</footer>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
